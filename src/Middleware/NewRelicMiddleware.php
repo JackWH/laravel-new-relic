@@ -23,18 +23,13 @@ class NewRelicMiddleware
             return $next($request);
         }
 
-        // Set the transaction name for New Relic, based on the HTTP request.
+        // Set the default transaction name for New Relic.
+        // This will be executed before the request is handled, so we can't
+        // yet resolve users or route names. We'll come back to that later.
         app(NewRelicTransaction::class)
-            ->setName(
-                config('new-relic.http.prefix') . (
-                    $this->getCustomTransactionName($request)
-                    ?? $this->getLivewireTransactionName($request)
-                    ?? $request->route()?->getName()
-                    ?? $request->route()?->getActionName()
-                    ?? $request->path()
-                )
-            )->addParameter(
-                // Record the IP address, if configured.
+            ->setName($this->requestName($request))
+            // Record the IP address, if configured.
+            ->addParameter(
                 'ip_address',
                 config('new-relic.http.visitors.record_ip_address') ? $request->ip() : null
             );
@@ -66,8 +61,26 @@ class NewRelicMiddleware
                 $this->user?->getAuthIdentifier(),
             );
 
+        // If the request name resolves differently, update it.
+        app(NewRelicTransaction::class)->setName($this->requestName($request));
+
         // Return the previous response and continue.
         return $response;
+    }
+
+    /**
+     * Get the name of the current request. This may change during the request lifecycle,
+     * so this method is called twice, both before and after the request is handled.
+     */
+    protected function requestName(Request $request): string
+    {
+        return config('new-relic.http.prefix') . (
+                $this->getCustomTransactionName($request)
+                ?? $this->getLivewireTransactionName($request)
+                ?? $request->route()?->getName()
+                ?? $request->route()?->getActionName()
+                ?? $request->path()
+            );
     }
 
     /**
@@ -96,7 +109,7 @@ class NewRelicMiddleware
     protected function getCustomTransactionName(Request $request): ?string
     {
         return collect($this->mapCustomTransactionNames())
-            ->mapWithKeys(fn (string $name, string $path) => [
+            ->mapWithKeys(fn(string $name, string $path) => [
                 (Str::of($path)->trim('/')->toString() ?: '/') => $name,
             ])->get(
                 Str::of($request->path())->trim('/')->toString() ?: '/'
