@@ -2,9 +2,9 @@
 
 namespace JackWH\LaravelNewRelic;
 
+use JackWH\LaravelNewRelic\Commands\LaravelNewRelicCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use JackWH\LaravelNewRelic\Commands\LaravelNewRelicCommand;
 
 class LaravelNewRelicServiceProvider extends PackageServiceProvider
 {
