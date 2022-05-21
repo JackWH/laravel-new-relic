@@ -5,12 +5,12 @@ namespace JackWH\LaravelNewRelic\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \JackWH\LaravelNewRelic\LaravelNewRelic
+ * @see \JackWH\LaravelNewRelic\NewRelicTransaction
  */
-class LaravelNewRelic extends Facade
+class NewRelicTransaction extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'laravel-new-relic';
+        return 'NewRelicTransaction';
     }
 }
