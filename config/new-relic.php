@@ -43,6 +43,7 @@ return [
     |               we can bootstrap the New Relic functions, and write logs
     |               indicating what would be happening instead. Useful for
     |               ensuring this package is set up properly before deploying.
+    |               Comment out 'local' after testing to avoid excessive logging.
     |
     */
     'environments' => [

@@ -48,6 +48,10 @@ In a loggable environment, the package will simulate calls it would normally mak
 
 Don't worry if your logs don't show a "transaction ended" item, as New Relic automatically finishes them at the end of a request. This is only really important for long-running processes, like the queue handler.
 
+> Once you're happy logging is working as expected, you can comment out `local` in the `config/newrelic.php` file.
+> This is just intended to help you check the package is working before initial deployment, or when making changes
+> which would affect New Relic transactions.
+
 #### Live Environments
 Assuming the New Relic extension is loaded, the package sets up hooks into Laravel to monitor requests at different stages of the lifecycle:
 - **HTTP transactions** are handled with a global `NewRelicMiddleware` on each request
