@@ -75,12 +75,12 @@ class NewRelicMiddleware
     protected function requestName(Request $request): string
     {
         return config('new-relic.http.prefix') . (
-                $this->getCustomTransactionName($request)
+            $this->getCustomTransactionName($request)
                 ?? $this->getLivewireTransactionName($request)
                 ?? $request->route()?->getName()
                 ?? $request->route()?->getActionName()
                 ?? $request->path()
-            );
+        );
     }
 
     /**
@@ -109,7 +109,7 @@ class NewRelicMiddleware
     protected function getCustomTransactionName(Request $request): ?string
     {
         return collect($this->mapCustomTransactionNames())
-            ->mapWithKeys(fn(string $name, string $path) => [
+            ->mapWithKeys(fn (string $name, string $path) => [
                 (Str::of($path)->trim('/')->toString() ?: '/') => $name,
             ])->get(
                 Str::of($request->path())->trim('/')->toString() ?: '/'

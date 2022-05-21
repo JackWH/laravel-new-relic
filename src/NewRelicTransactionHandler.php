@@ -204,9 +204,9 @@ class NewRelicTransactionHandler
                     config('new-relic.scheduler.prefix') .
                         ($event->task->description ?: $this->parseTaskCommand($event->task->command))
                 )->addParameter(
-                        'command',
-                        collect($this->getCommandArgs())->implode(' ')
-                    );
+                    'command',
+                    collect($this->getCommandArgs())->implode(' ')
+                );
             }
         );
 
