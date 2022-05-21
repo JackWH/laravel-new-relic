@@ -2,8 +2,7 @@
 
 namespace JackWH\LaravelNewRelic;
 
-use \Illuminate\Console;
-use Illuminate\Foundation\Http\Kernel;
+use Illuminate\Console;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -20,7 +19,8 @@ class NewRelicTransactionHandler
     {
         // If we're running in a loggable environment, boot up the helper functions.
         if (app()->environment(config('new-relic.loggable'))) {
-            require_once (__DIR__ . '/Helpers/LoggableNewRelicFunctions.php');
+            require_once(__DIR__ . '/Helpers/LoggableNewRelicFunctions.php');
+
             return true;
         }
 
@@ -76,7 +76,7 @@ class NewRelicTransactionHandler
 
         // Register the NewRelicMiddleware for HTTP requests
         if ($middleware = config('new-relic.http.middleware')) {
-            app(\Illuminate\Contracts\Http\Kernel::class)->pushMiddleware( $middleware);
+            app(\Illuminate\Contracts\Http\Kernel::class)->pushMiddleware($middleware);
         }
     }
 
@@ -88,9 +88,10 @@ class NewRelicTransactionHandler
         /**
          * Before each job begins processing, start a new transaction.
          */
-        app('queue')->before(function(\Illuminate\Queue\Events\JobProcessing $event) {
+        app('queue')->before(function (\Illuminate\Queue\Events\JobProcessing $event) {
             if ($this->shouldIgnoreJob($event->connectionName, $event->job->getQueue(), $event->job)) {
                 app(NewRelicTransaction::class)->ignore();
+
                 return;
             }
 
@@ -108,7 +109,7 @@ class NewRelicTransactionHandler
         /**
          * After each job finishes processing, end the previous transaction.
          */
-        app('queue')->after(function(\Illuminate\Queue\Events\JobProcessed $event) {
+        app('queue')->after(function (\Illuminate\Queue\Events\JobProcessed $event) {
             app(NewRelicTransaction::class)->end();
         });
     }
@@ -146,9 +147,10 @@ class NewRelicTransactionHandler
          */
         app('events')->listen(
             Console\Events\CommandStarting::class,
-            function(Console\Events\CommandStarting $event) {
+            function (Console\Events\CommandStarting $event) {
                 if ($this->shouldIgnoreCommand($event->command)) {
                     app(NewRelicTransaction::class)->ignore();
+
                     return;
                 }
 
@@ -157,16 +159,18 @@ class NewRelicTransactionHandler
                 app(NewRelicTransaction::class)->start(
                     config('new-relic.artisan.prefix') . $event->command
                 )->addParameter('command', collect($this->getCommandArgs())->implode(' '));
-            });
+            }
+        );
 
         /**
          * When a command finishes executing, end the transaction with New Relic.
          */
         app('events')->listen(
             Console\Events\CommandFinished::class,
-            function(Console\Events\CommandFinished $event) {
+            function (Console\Events\CommandFinished $event) {
                 app(NewRelicTransaction::class)->end();
-            });
+            }
+        );
     }
 
     /**
@@ -187,9 +191,10 @@ class NewRelicTransactionHandler
          */
         app('events')->listen(
             Console\Events\ScheduledTaskStarting::class,
-            function(\Illuminate\Console\Events\ScheduledTaskStarting $event) {
+            function (\Illuminate\Console\Events\ScheduledTaskStarting $event) {
                 if ($this->shouldIgnoreTask($event->task->description ?: $event->task->command)) {
                     app(NewRelicTransaction::class)->ignore();
+
                     return;
                 }
 
@@ -198,25 +203,28 @@ class NewRelicTransactionHandler
                 app(NewRelicTransaction::class)->start(
                     config('new-relic.scheduler.prefix') .
                         ($event->task->description ?: $this->parseTaskCommand($event->task->command))
-                    )->addParameter(
+                )->addParameter(
                         'command',
                         collect($this->getCommandArgs())->implode(' ')
                     );
-            });
+            }
+        );
 
         /**
          * When a scheduled task finishes, end the transaction with New Relic.
          */
         app('events')->listen(
             Console\Events\ScheduledTaskFinished::class,
-            function(Console\Events\ScheduledTaskFinished $event) {
+            function (Console\Events\ScheduledTaskFinished $event) {
                 app(NewRelicTransaction::class)->end();
-            });
+            }
+        );
         app('events')->listen(
             Console\Events\ScheduledBackgroundTaskFinished::class,
-            function(Console\Events\ScheduledBackgroundTaskFinished $event) {
+            function (Console\Events\ScheduledBackgroundTaskFinished $event) {
                 app(NewRelicTransaction::class)->end();
-            });
+            }
+        );
     }
 
     /**
@@ -244,7 +252,7 @@ class NewRelicTransactionHandler
     protected function getCommandString(): string
     {
         $cmdName = trim(collect($this->getCommandArgs())->map(
-            fn(string $argument) => Str::contains($argument, '=')
+            fn (string $argument) => Str::contains($argument, '=')
                 ? (Str::before($argument, '=') . '=?')
                 : $argument
         )->implode(' '));

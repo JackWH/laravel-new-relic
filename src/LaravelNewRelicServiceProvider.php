@@ -2,10 +2,8 @@
 
 namespace JackWH\LaravelNewRelic;
 
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use JackWH\LaravelNewRelic\Commands\NewRelicDeployCommand;
-use JackWH\LaravelNewRelic\Middleware\NewRelicMiddleware;
 
 class LaravelNewRelicServiceProvider extends ServiceProvider
 {
@@ -23,8 +21,8 @@ class LaravelNewRelicServiceProvider extends ServiceProvider
         // Bind the transaction and handler classes to the container.
         // We bind them as scoped singletons, meaning they will be
         // automatically reset at the end of each lifecycle request.
-        $this->app->scoped(NewRelicTransaction::class, fn($app) => new NewRelicTransaction());
-        $this->app->scoped(NewRelicTransactionHandler::class, fn($app) => new NewRelicTransactionHandler());
+        $this->app->scoped(NewRelicTransaction::class, fn ($app) => new NewRelicTransaction());
+        $this->app->scoped(NewRelicTransactionHandler::class, fn ($app) => new NewRelicTransactionHandler());
     }
 
     /**

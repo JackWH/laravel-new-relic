@@ -2,13 +2,11 @@
 
 namespace JackWH\LaravelNewRelic\Middleware;
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Str;
-use JackWH\LaravelNewRelic\LaravelNewRelicServiceProvider;
-use JackWH\LaravelNewRelic\NewRelicTransaction;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use JackWH\LaravelNewRelic\NewRelicTransaction;
 use JackWH\LaravelNewRelic\NewRelicTransactionHandler;
 
 class NewRelicMiddleware
@@ -98,7 +96,7 @@ class NewRelicMiddleware
     protected function getCustomTransactionName(Request $request): ?string
     {
         return collect($this->mapCustomTransactionNames())
-            ->mapWithKeys(fn(string $name, string $path) => [
+            ->mapWithKeys(fn (string $name, string $path) => [
                 (Str::of($path)->trim('/')->toString() ?: '/') => $name,
             ])->get(
                 Str::of($request->path())->trim('/')->toString() ?: '/'

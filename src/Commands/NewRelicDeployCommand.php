@@ -30,9 +30,9 @@ class NewRelicDeployCommand extends Command
             ->asJson()
             ->post(config('new-relic.deployments.endpoint') . 'applications/380122200/deployments.json', [
                 'deployment' => [
-                    'revision'    => $revision,
+                    'revision' => $revision,
                     'description' => $this->argument('description'),
-                    'user'        => config('new-relic.deployments.user'),
+                    'user' => config('new-relic.deployments.user'),
                 ],
             ]);
 

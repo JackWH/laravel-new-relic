@@ -9,10 +9,10 @@ namespace JackWH\LaravelNewRelic;
  */
 class NewRelicTransaction
 {
-    public bool   $isActive     = true;
-    public bool   $isIgnored    = false;
-    public string $name         = 'transaction';
-    public array  $parameters   = [];
+    public bool   $isActive = true;
+    public bool   $isIgnored = false;
+    public string $name = 'transaction';
+    public array  $parameters = [];
     public bool   $isBackground = false;
 
     /**
@@ -20,11 +20,11 @@ class NewRelicTransaction
      */
     public function __construct(bool $isActive = true)
     {
-        $this->name         = 'transaction';
-        $this->parameters   = [];
+        $this->name = 'transaction';
+        $this->parameters = [];
         $this->isBackground = app()->runningInConsole();
-        $this->isActive     = $isActive;
-        $this->isIgnored    = false;
+        $this->isActive = $isActive;
+        $this->isIgnored = false;
     }
 
     /**
@@ -51,9 +51,9 @@ class NewRelicTransaction
         if (! $this->isIgnored()) {
             newrelic_ignore_transaction();
 
-            $this->name      = 'transaction';
+            $this->name = 'transaction';
             $this->isIgnored = true;
-            $this->isActive  = false;
+            $this->isActive = false;
         }
 
         return $this;
@@ -121,7 +121,7 @@ class NewRelicTransaction
         }
 
         $this->isIgnored = false;
-        $this->isActive  = true;
+        $this->isActive = true;
 
         $this->end();
         newrelic_start_transaction(config('new-relic.app_name'));
@@ -139,11 +139,11 @@ class NewRelicTransaction
         if ($this->isActive($ifNamed)) {
             newrelic_end_transaction();
 
-            $this->name         = 'transaction';
-            $this->parameters   = [];
+            $this->name = 'transaction';
+            $this->parameters = [];
             $this->isBackground = app()->runningInConsole();
-            $this->isActive     = false;
-            $this->isIgnored    = false;
+            $this->isActive = false;
+            $this->isIgnored = false;
         }
 
         return $this;
