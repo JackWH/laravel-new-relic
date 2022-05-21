@@ -1,3 +1,5 @@
 # Changelog
 
-All notable changes to `laravel-new-relic` will be documented in this file.
+## v1.0
+
+- Initial release. Enjoy!
