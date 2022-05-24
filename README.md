@@ -11,11 +11,13 @@ This package makes it simple to set up and monitor your [Laravel](https://larave
 
 New Relic provides some excellent low-level insights into your application. The [New Relic PHP agent](https://docs.newrelic.com/docs/apm/agents/php-agent/getting-started/introduction-new-relic-php/) is particularly useful in production environments, as it hooks in at a lower level than other monitoring services, and with little to no impact on performance.
 
-Whilst New Relic can monitor a Laravel application out-of-the-box, this package reports transactions that are tailored to Laravel, and reported in a more consisted way.
+> **New Relic has a fully-featured [free plan](https://newrelic.com/pricing)** which is ideal for growing Laravel applications. This package isn't affiliated with them — I just built it because I've found the service very helpful whilst scaling my app, and wanted a more tailored solution for Laravel.
+> 
+> Whilst New Relic can monitor a Laravel application out-of-the-box, this package reports transactions that are optimised for Laravel, and reported in a more consisted way.
 
 ## Installation
 
-> To monitor your application in production you'll need a [New Relic](https://newrelic.com) API account, and you should [install the PHP monitoring agent](https://docs.newrelic.com/docs/apm/agents/php-agent/installation/php-agent-installation-overview/). You don't need to install New Relic in your development environment (unless you really want to). If the extension isn't detected the package will simulate calls to the New Relic PHP agent, and log each one so you can test before deploying.
+To monitor your application in production you'll need a [New Relic](https://newrelic.com) API account, and you should [install the PHP monitoring agent](https://docs.newrelic.com/docs/apm/agents/php-agent/installation/php-agent-installation-overview/). You don't need to install New Relic in your development environment (unless you really want to). If the extension isn't detected the package will simulate calls to the New Relic PHP agent, and log each one so you can test before deploying.
 
 > If you're installing this on a server which is *already* being monitored by New Relic, **be aware this package reports transactions with different naming conventions than New Relic normally auto-detects**. If your existing New Relic data is very important to you, don't install this.
 
