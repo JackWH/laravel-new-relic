@@ -28,7 +28,7 @@ class NewRelicDeployCommand extends Command
 
         $nr = Http::withHeaders(['Api-Key' => config('new-relic.deployments.api_key')])
             ->asJson()
-            ->post(config('new-relic.deployments.endpoint') . 'applications/380122200/deployments.json', [
+            ->post(config('new-relic.deployments.endpoint') . 'applications/' . config('new-relic.deployments.app_id') . '/deployments.json', [
                 'deployment' => [
                     'revision' => $revision,
                     'description' => $this->argument('description'),
