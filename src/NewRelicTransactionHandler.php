@@ -99,9 +99,9 @@ class NewRelicTransactionHandler
             app(NewRelicTransaction::class)
                 ->start(
                     config('new-relic.queue.prefix') .
-                    (method_exists($event->job, 'resolveName'))
+                    ((method_exists($event->job, 'resolveName'))
                         ? $event->job->resolveName()
-                        : $event->job->getName()
+                        : $event->job->getName())
                 )->addParameter('queue', $event->job->getQueue())
                 ->addParameter('connection', $event->connectionName);
         });
