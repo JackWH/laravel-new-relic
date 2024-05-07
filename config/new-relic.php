@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -28,7 +30,7 @@ return [
     | api_key:  Optional, but required to use the New Relic deployments feature.
     |
     */
-    'app_name'     => ini_get('newrelic.appname') ?: env('APP_NAME', 'laravel'),
+    'app_name' => ini_get('newrelic.appname') ?: env('APP_NAME', 'laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -49,7 +51,7 @@ return [
     'environments' => [
         'production',
     ],
-    'loggable'     => [
+    'loggable' => [
         'local',
     ],
 
@@ -88,17 +90,17 @@ return [
     | ignore:     Set which HTTP requests should be ignored by New Relic.
     |
     */
-    'http'         => [
+    'http' => [
         'middleware' => \JackWH\LaravelNewRelic\Middleware\NewRelicMiddleware::class,
 
         'visitors' => [
-            'record_user_id'    => true,
+            'record_user_id' => true,
             'record_ip_address' => false,
-            'guest_label'       => 'Guest',
+            'guest_label' => 'Guest',
         ],
 
         'rewrite' => [
-            '/livewire/livewire.js'     => 'livewire.js',
+            '/livewire/livewire.js' => 'livewire.js',
             '/livewire/livewire.js.map' => 'livewire.js.map',
         ],
 
@@ -128,7 +130,7 @@ return [
     |           runtime stats for background, noisy, or long-running processes.
     |
     */
-    'artisan'      => [
+    'artisan' => [
         'prefix' => '',
 
         'ignore' => [
@@ -164,13 +166,13 @@ return [
     |           connections, queue names, or job classes, enter them here.
     |
     */
-    'queue'        => [
+    'queue' => [
         'prefix' => '',
 
         'ignore' => [
             'connections' => ['sync'],
-            'queues'      => [],
-            'jobs'        => [],
+            'queues' => [],
+            'jobs' => [],
         ],
     ],
 
@@ -196,7 +198,7 @@ return [
     |           ignored in the Artisan or Queue configuration sections.
     |
     */
-    'scheduler'    => [
+    'scheduler' => [
         'prefix' => '',
 
         'ignore' => [
@@ -220,12 +222,12 @@ return [
     | detect_hash:  If true, and no git commit hash is passed to the command,
     |               the package will attempt to auto-detect the revision.
     */
-    'deployments'  => [
-        'api_key'  => env('NEW_RELIC_API_KEY'),
-        'app_id'   => env('NEW_RELIC_APP_ID'),
+    'deployments' => [
+        'api_key' => env('NEW_RELIC_API_KEY'),
+        'app_id' => env('NEW_RELIC_APP_ID'),
         'endpoint' => env('NEW_RELIC_API_ENDPOINT', 'https://api.newrelic.com/v2/'),
 
-        'user'        => 'you@example.com',
+        'user' => 'you@example.com',
 
         'detect_hash' => true,
     ],

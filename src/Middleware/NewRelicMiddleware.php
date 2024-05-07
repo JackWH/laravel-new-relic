@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JackWH\LaravelNewRelic\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -11,12 +14,12 @@ use JackWH\LaravelNewRelic\NewRelicTransactionHandler;
 
 class NewRelicMiddleware
 {
-    protected ?\Illuminate\Contracts\Auth\Authenticatable $user = null;
+    protected ?Authenticatable $user = null;
 
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         // Ensure New Relic is enabled before continuing.
         if (! app(NewRelicTransactionHandler::class)::newRelicEnabled()) {
@@ -55,7 +58,7 @@ class NewRelicMiddleware
         app(NewRelicTransaction::class)
             ->addParameter(
                 'user_type',
-                $this->user ? 'User' : config('new-relic.http.visitors.guest_label')
+                $this->user instanceof Authenticatable ? 'User' : config('new-relic.http.visitors.guest_label')
             )->addParameter(
                 'user_id',
                 $this->user?->getAuthIdentifier(),
@@ -109,7 +112,7 @@ class NewRelicMiddleware
     protected function getCustomTransactionName(Request $request): ?string
     {
         return collect($this->mapCustomTransactionNames())
-            ->mapWithKeys(fn (string $name, string $path) => [
+            ->mapWithKeys(static fn (string $name, string $path): array => [
                 (Str::of($path)->trim('/')->toString() ?: '/') => $name,
             ])->get(
                 Str::of($request->path())->trim('/')->toString() ?: '/'

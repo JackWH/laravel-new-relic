@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JackWH\LaravelNewRelic\Facades;
 
 use Illuminate\Support\Facades\Facade;
