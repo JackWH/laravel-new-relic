@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.1.0 — Laravel 11 support, improved standards - 2024-05-10
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 1.3.6 to 1.4.0 by @dependabot in https://github.com/JackWH/laravel-new-relic/pull/12
+* Bump dependabot/fetch-metadata from 1.4.0 to 1.5.1 by @dependabot in https://github.com/JackWH/laravel-new-relic/pull/13
+* Bump dependabot/fetch-metadata from 1.5.1 to 1.6.0 by @dependabot in https://github.com/JackWH/laravel-new-relic/pull/14
+* Feature/l11 strict standards by @fruitl00p in https://github.com/JackWH/laravel-new-relic/pull/19
+
+### New Contributors
+
+* @fruitl00p made their first contribution in https://github.com/JackWH/laravel-new-relic/pull/19
+
+**Full Changelog**: https://github.com/JackWH/laravel-new-relic/compare/v1.0.3...v1.1.0
+
 ## v1.0.3 — Laravel 10 support, queue prefix fix - 2023-04-03
 
 ### What's Changed
