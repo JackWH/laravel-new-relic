@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JackWH\LaravelNewRelic;
 
 /**
@@ -9,22 +11,20 @@ namespace JackWH\LaravelNewRelic;
  */
 class NewRelicTransaction
 {
-    public bool   $isActive = true;
-    public bool   $isIgnored = false;
+    public bool $isIgnored = false;
+
     public string $name = 'transaction';
-    public array  $parameters = [];
-    public bool   $isBackground = false;
+
+    public array $parameters = [];
+
+    public bool $isBackground = false;
 
     /**
      * Set up a new transaction, with some sensible defaults.
      */
-    public function __construct(bool $isActive = true)
+    public function __construct(public bool $isActive = true)
     {
-        $this->name = 'transaction';
-        $this->parameters = [];
         $this->isBackground = app()->runningInConsole();
-        $this->isActive = $isActive;
-        $this->isIgnored = false;
     }
 
     /**
@@ -48,7 +48,7 @@ class NewRelicTransaction
      */
     public function ignore(): self
     {
-        if (! $this->isIgnored()) {
+        if (!$this->isIgnored()) {
             newrelic_ignore_transaction();
 
             $this->name = 'transaction';
@@ -87,13 +87,15 @@ class NewRelicTransaction
     /**
      * Add a custom parameter to the transaction.
      */
-    public function addParameter(string $key, int|float|string|null $value): self
-    {
+    public function addParameter(
+        string $key,
+        int|float|string|null $value
+    ): self {
         if ($this->isIgnored()) {
             return $this;
         }
 
-        if ($value !== null && (! $this->hasParameter($key, $value))) {
+        if ($value !== null && (!$this->hasParameter($key, $value))) {
             newrelic_add_custom_parameter($key, $value);
             $this->parameters[$key] = $value;
         }
@@ -104,8 +106,10 @@ class NewRelicTransaction
     /**
      * Check if the transaction has a specific parameter set.
      */
-    public function hasParameter(string $key, int|float|string|null $value): bool
-    {
+    public function hasParameter(
+        string $key,
+        int|float|string|null $value
+    ): bool {
         return array_key_exists($key, $this->parameters)
             && ($value === null || $this->parameters[$key] === $value);
     }
@@ -150,12 +154,13 @@ class NewRelicTransaction
     }
 
     /**
-     * Check if the transaction is active, optionally filtered to a specific name.
+     * Check if the transaction is active, optionally filtered to a specific
+     * name.
      */
     public function isActive(?string $withName = null): bool
     {
         return $this->isActive
-            && (! $this->isIgnored)
+            && (!$this->isIgnored)
             && ($withName === null || $this->name === $withName);
     }
 
@@ -166,6 +171,9 @@ class NewRelicTransaction
      */
     public function identifier(bool $withObjId = true): string
     {
-        return $this->name . ($withObjId ? ' [' . spl_object_id($this) . ']' : '');
+        return $this->name . ($withObjId ? ' [' . spl_object_id(
+            $this
+        ) . ']' : '');
     }
+
 }

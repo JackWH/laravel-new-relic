@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JackWH\LaravelNewRelic\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Throwable;
 
 class NewRelicDeployCommand extends Command
 {
@@ -59,7 +62,7 @@ class NewRelicDeployCommand extends Command
 
         try {
             return trim(exec('git log --pretty="%H" -n1 HEAD'));
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->warn('Could not auto-detect revision hash: ' . $throwable->getMessage());
         }
 
